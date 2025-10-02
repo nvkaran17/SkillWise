@@ -101,4 +101,10 @@ app.get('/debug', (req, res) => {
 });
 
 // Export the Express app as a serverless function for Vercel
-export default app;
+export default (req, res) => {
+  // Add some basic logging
+  console.log(`${req.method} ${req.url}`);
+  
+  // Handle the request with Express
+  return app(req, res);
+};
