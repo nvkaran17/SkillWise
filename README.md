@@ -80,8 +80,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/skillwise.git
-cd skillwise
+git clone https://github.com/nvkaran17/SkillWise.git
+cd SkillWise
 ```
 
 ### 2. Install Dependencies
@@ -316,12 +316,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🐛 Bug Reports & Feature Requests
 
-Please use the [GitHub Issues](https://github.com/yourusername/skillwise/issues) page to report bugs or request new features.
+Please use the [GitHub Issues](https://github.com/nvkaran17/SkillWise/issues) page to report bugs or request new features.
 
 ## 📞 Support & Contact
 
 - **Email**: support@skillwise.app
-- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **GitHub**: [@nvkaran17](https://github.com/nvkaran17)
 - **Documentation**: [docs.skillwise.app](https://docs.skillwise.app)
 
 ## 🙏 Acknowledgments

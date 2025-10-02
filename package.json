@@ -25,12 +25,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/skillwise.git"
+    "url": "https://github.com/nvkaran17/SkillWise.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/skillwise/issues"
+    "url": "https://github.com/nvkaran17/SkillWise/issues"
   },
-  "homepage": "https://github.com/yourusername/skillwise#readme",
+  "homepage": "https://github.com/nvkaran17/SkillWise#readme",
   "dependencies": {
     "axios": "^1.10.0"
   },
