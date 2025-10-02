@@ -11,12 +11,31 @@ import { verifyFirebaseToken } from './middleware/auth.js';
 dotenv.config();
 const app = express();
 
+// Configure CORS for both development and production
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  process.env.VITE_FRONTEND_ORIGIN,
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: [process.env.VITE_FRONTEND_ORIGIN || 'http://localhost:5173'],
+  origin: allowedOrigins.length > 0 ? allowedOrigins : true,
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true
 }));
+
 app.use(express.json());
+
+// Root route for Vercel deployment
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'SkillWise API is running! 🚀',
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV || 'development'
+  });
+});
 
 app.use('/health', healthRouter);
 

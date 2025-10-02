@@ -1,7 +1,15 @@
-skillwise1-98828-firebase-adminsdk-fbsvc-d8ff0a30ff.json
+# Firebase service account keys (NEVER commit these!)
+skillwise1-98828-firebase-adminsdk-*.json
+serviceAccountKey.json
 *.user
 *.sln.docstates
-*.json
+# Allow package.json and vercel.json but exclude Firebase keys
+!package.json
+!vercel.json
 *.sln.ide
 *.sln.ide.*
 node_modules/
+# Environment files
+.env
+.env.local
+.env.*.local
