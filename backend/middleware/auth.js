@@ -1,27 +1,4 @@
-import admin from "firebase-admin";
-import { readFileSync } from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-try {
-  // Load your service account key
-  const serviceAccount = JSON.parse(
-    readFileSync(path.join(__dirname, "../skillwise1-98828-firebase-adminsdk-fbsvc-a850dcf0bf.json"))
-  );
-
-  // Initialize Firebase Admin if not already initialized
-  if (!admin.apps.length) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    });
-    console.log('✅ Firebase Admin initialized successfully');
-  }
-} catch (error) {
-  console.error('❌ Error initializing Firebase Admin:', error);
-  process.exit(1);
-}
+import firebaseAdmin from '../firebaseAdmin.js';
 
 export const verifyFirebaseToken = async (req, res, next) => {
   try {
@@ -40,7 +17,13 @@ export const verifyFirebaseToken = async (req, res, next) => {
     }
 
     console.log('🔑 Attempting to verify token...');
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    
+    if (!firebaseAdmin) {
+      console.log('❌ Firebase Admin not initialized');
+      return res.status(500).json({ error: 'Server configuration error: Firebase not initialized' });
+    }
+    
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
     console.log('✅ Token verified successfully');
     
     req.user = decodedToken;
