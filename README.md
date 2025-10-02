@@ -314,15 +314,10 @@ We welcome contributions! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🐛 Bug Reports & Feature Requests
+##  Support & Contact
 
-Please use the [GitHub Issues](https://github.com/nvkaran17/SkillWise/issues) page to report bugs or request new features.
-
-## 📞 Support & Contact
-
-- **Email**: support@skillwise.app
+- **Email**: nvkaran33@gmail.com
 - **GitHub**: [@nvkaran17](https://github.com/nvkaran17)
-- **Documentation**: [docs.skillwise.app](https://docs.skillwise.app)
 
 ## 🙏 Acknowledgments
 
@@ -335,7 +330,7 @@ Please use the [GitHub Issues](https://github.com/nvkaran17/SkillWise/issues) pa
 ---
 
 <div align="center">
-  <strong>Built with ❤️ by the SkillWise Team</strong>
+  <strong>Built with ❤️ by Karan</strong>
   <br>
   <em>Empowering learners through AI-powered education</em>
 </div>
