@@ -2,14 +2,37 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import { router as fileRoutes } from '../routes/file.js';
-import { router as quizRoutes } from '../routes/quiz.js';
-import { router as chatRoutes } from '../routes/chat.js';
-import { healthRouter } from '../routes/health.js';
-import { verifyFirebaseToken } from '../middleware/auth.js';
-
+// Load environment variables first
 dotenv.config();
+
 const app = express();
+
+// Add error handling for imports
+let fileRoutes, quizRoutes, chatRoutes, healthRouter, verifyFirebaseToken;
+
+try {
+  console.log('Loading routes and middleware...');
+  
+  const fileModule = await import('../routes/file.js');
+  fileRoutes = fileModule.router;
+  
+  const quizModule = await import('../routes/quiz.js');
+  quizRoutes = quizModule.router;
+  
+  const chatModule = await import('../routes/chat.js');
+  chatRoutes = chatModule.router;
+  
+  const healthModule = await import('../routes/health.js');
+  healthRouter = healthModule.healthRouter;
+  
+  const authModule = await import('../middleware/auth.js');
+  verifyFirebaseToken = authModule.verifyFirebaseToken;
+  
+  console.log('✅ All modules loaded successfully');
+} catch (error) {
+  console.error('❌ Error loading modules:', error);
+  // Continue without erroring out completely
+}
 
 // Configure CORS for both development and production
 const allowedOrigins = [
@@ -37,12 +60,45 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/health', healthRouter);
+// Mount routes only if they loaded successfully
+if (healthRouter) {
+  app.use('/health', healthRouter);
+  console.log('✅ Health route mounted');
+}
 
-// Mount routes with token verification middleware
-app.use('/api/quiz', verifyFirebaseToken, quizRoutes);
-app.use('/api/file', verifyFirebaseToken, fileRoutes);
-app.use('/api/chat', verifyFirebaseToken, chatRoutes);
+if (verifyFirebaseToken && quizRoutes) {
+  app.use('/api/quiz', verifyFirebaseToken, quizRoutes);
+  console.log('✅ Quiz routes mounted');
+}
+
+if (verifyFirebaseToken && fileRoutes) {
+  app.use('/api/file', verifyFirebaseToken, fileRoutes);
+  console.log('✅ File routes mounted');
+}
+
+if (verifyFirebaseToken && chatRoutes) {
+  app.use('/api/chat', verifyFirebaseToken, chatRoutes);
+  console.log('✅ Chat routes mounted');
+}
+
+// Add a debug route to check environment
+app.get('/debug', (req, res) => {
+  res.json({
+    message: 'Debug info',
+    env: {
+      NODE_ENV: process.env.NODE_ENV,
+      hasFirebaseProjectId: !!process.env.FIREBASE_PROJECT_ID,
+      hasOpenAI: !!process.env.OPENROUTER_API_KEY,
+      moduleStatus: {
+        healthRouter: !!healthRouter,
+        fileRoutes: !!fileRoutes,
+        quizRoutes: !!quizRoutes,
+        chatRoutes: !!chatRoutes,
+        verifyFirebaseToken: !!verifyFirebaseToken
+      }
+    }
+  });
+});
 
 // Export the Express app as a serverless function for Vercel
 export default app;
