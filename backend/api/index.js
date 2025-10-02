@@ -38,6 +38,7 @@ try {
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
+  'https://skill-wise-eight.vercel.app',
   process.env.VITE_FRONTEND_ORIGIN,
   process.env.FRONTEND_URL
 ].filter(Boolean);
