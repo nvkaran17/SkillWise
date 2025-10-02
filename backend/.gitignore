@@ -1,0 +1,7 @@
+skillwise1-98828-firebase-adminsdk-fbsvc-d8ff0a30ff.json
+*.user
+*.sln.docstates
+*.json
+*.sln.ide
+*.sln.ide.*
+node_modules/

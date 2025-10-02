@@ -1,0 +1,41 @@
+{
+  "name": "skillwise",
+  "version": "1.0.0",
+  "description": "AI-Powered Learning Platform - Your AI Learning Companion",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "clean": "rm -rf node_modules backend/node_modules frontend/node_modules",
+    "lint": "cd frontend && npm run lint"
+  },
+  "keywords": [
+    "ai",
+    "learning",
+    "education",
+    "quiz", 
+    "react",
+    "nodejs",
+    "firebase",
+    "openai"
+  ],
+  "author": "SkillWise Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/skillwise.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/skillwise/issues"
+  },
+  "homepage": "https://github.com/yourusername/skillwise#readme",
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "dotenv": "^17.2.0"
+  }
+}
