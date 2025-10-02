@@ -60,10 +60,28 @@ app.get('/', (req, res) => {
   });
 });
 
-// Mount routes only if they loaded successfully
+// Add simple routes directly in the main app
+app.get('/health', (req, res) => {
+  res.json({ 
+    ok: true, 
+    time: new Date().toISOString(), 
+    uptime: process.uptime(),
+    message: 'Health check successful'
+  });
+});
+
+app.get('/status', (req, res) => {
+  res.json({
+    status: 'online',
+    service: 'SkillWise API',
+    version: '1.0.0',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Mount other routes only if they loaded successfully
 if (healthRouter) {
-  app.use('/health', healthRouter);
-  console.log('✅ Health route mounted');
+  console.log('✅ Health router available (using direct route instead)');
 }
 
 if (verifyFirebaseToken && quizRoutes) {
