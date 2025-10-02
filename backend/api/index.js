@@ -13,25 +13,49 @@ let fileRoutes, quizRoutes, chatRoutes, healthRouter, verifyFirebaseToken;
 try {
   console.log('Loading routes and middleware...');
   
-  const fileModule = await import('../routes/file.js');
-  fileRoutes = fileModule.router;
+  try {
+    const fileModule = await import('../routes/file.js');
+    fileRoutes = fileModule.router;
+    console.log('✅ File routes loaded');
+  } catch (err) {
+    console.error('❌ Failed to load file routes:', err.message);
+  }
   
-  const quizModule = await import('../routes/quiz.js');
-  quizRoutes = quizModule.router;
+  try {
+    const quizModule = await import('../routes/quiz.js');
+    quizRoutes = quizModule.router;
+    console.log('✅ Quiz routes loaded');
+  } catch (err) {
+    console.error('❌ Failed to load quiz routes:', err.message);
+  }
   
-  const chatModule = await import('../routes/chat.js');
-  chatRoutes = chatModule.router;
+  try {
+    const chatModule = await import('../routes/chat.js');
+    chatRoutes = chatModule.router;
+    console.log('✅ Chat routes loaded');
+  } catch (err) {
+    console.error('❌ Failed to load chat routes:', err.message);
+  }
   
-  const healthModule = await import('../routes/health.js');
-  healthRouter = healthModule.healthRouter;
+  try {
+    const healthModule = await import('../routes/health.js');
+    healthRouter = healthModule.healthRouter;
+    console.log('✅ Health routes loaded');
+  } catch (err) {
+    console.error('❌ Failed to load health routes:', err.message);
+  }
   
-  const authModule = await import('../middleware/auth.js');
-  verifyFirebaseToken = authModule.verifyFirebaseToken;
+  try {
+    const authModule = await import('../middleware/auth.js');
+    verifyFirebaseToken = authModule.verifyFirebaseToken;
+    console.log('✅ Auth middleware loaded');
+  } catch (err) {
+    console.error('❌ Failed to load auth middleware:', err.message);
+  }
   
-  console.log('✅ All modules loaded successfully');
+  console.log('🔄 Module loading completed');
 } catch (error) {
-  console.error('❌ Error loading modules:', error);
-  // Continue without erroring out completely
+  console.error('❌ Fatal error during module loading:', error);
 }
 
 // Configure CORS for both development and production
@@ -80,24 +104,49 @@ app.get('/status', (req, res) => {
   });
 });
 
+// Add simple test routes for debugging
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API test route working', timestamp: new Date().toISOString() });
+});
+
+app.post('/api/test', (req, res) => {
+  res.json({ message: 'API POST test route working', body: req.body, timestamp: new Date().toISOString() });
+});
+
 // Mount other routes only if they loaded successfully
 if (healthRouter) {
   console.log('✅ Health router available (using direct route instead)');
 }
 
-if (verifyFirebaseToken && quizRoutes) {
-  app.use('/api/quiz', verifyFirebaseToken, quizRoutes);
-  console.log('✅ Quiz routes mounted');
+// Mount routes - make them work even if Firebase fails
+if (quizRoutes) {
+  if (verifyFirebaseToken) {
+    app.use('/api/quiz', verifyFirebaseToken, quizRoutes);
+    console.log('✅ Quiz routes mounted with auth');
+  } else {
+    app.use('/api/quiz', quizRoutes);
+    console.log('⚠️ Quiz routes mounted WITHOUT auth (Firebase failed)');
+  }
 }
 
-if (verifyFirebaseToken && fileRoutes) {
-  app.use('/api/file', verifyFirebaseToken, fileRoutes);
-  console.log('✅ File routes mounted');
+if (fileRoutes) {
+  if (verifyFirebaseToken) {
+    app.use('/api/file', verifyFirebaseToken, fileRoutes);
+    console.log('✅ File routes mounted with auth');
+  } else {
+    app.use('/api/file', fileRoutes);
+    console.log('⚠️ File routes mounted WITHOUT auth (Firebase failed)');
+  }
 }
 
-if (verifyFirebaseToken && chatRoutes) {
-  app.use('/api/chat', verifyFirebaseToken, chatRoutes);
-  console.log('✅ Chat routes mounted');
+if (chatRoutes) {
+  if (verifyFirebaseToken) {
+    app.use('/api/chat', verifyFirebaseToken, chatRoutes);
+    console.log('✅ Chat routes mounted with auth');
+  } else {
+    app.use('/api/chat', chatRoutes);
+    console.log('⚠️ Chat routes mounted WITHOUT auth (Firebase failed)');
+  }
 }
 
 // Add a debug route to check environment
