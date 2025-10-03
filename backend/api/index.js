@@ -113,6 +113,15 @@ app.post('/api/test', (req, res) => {
   res.json({ message: 'API POST test route working', body: req.body, timestamp: new Date().toISOString() });
 });
 
+// Test route for file endpoints (no auth required)
+app.get('/api/file/test', (req, res) => {
+  res.json({ 
+    message: 'File routes are working!', 
+    timestamp: new Date().toISOString(),
+    uploadDirectory: process.env.VERCEL ? '/tmp' : 'uploads/'
+  });
+});
+
 // Mount other routes only if they loaded successfully
 if (healthRouter) {
   console.log('✅ Health router available (using direct route instead)');

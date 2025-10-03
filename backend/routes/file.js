@@ -44,14 +44,6 @@ const upload = multer({
 // Store file content in memory mapped by user ID
 const fileContents = new Map();
 
-// Test route to check if file routes are working
-router.get('/test', (req, res) => {
-  res.json({ 
-    message: 'File routes are working!', 
-    timestamp: new Date().toISOString() 
-  });
-});
-
 // ------------------ Upload Route ------------------
 router.post('/upload', upload.single('file'), async (req, res) => {
   const userId = req.user.uid; // Get user ID from the authenticated request
