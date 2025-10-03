@@ -8,9 +8,13 @@ import PDFParser from 'pdf2json';
 
 const router = express.Router();
 
-// Configure multer for file uploads
+// Configure multer for file uploads (use /tmp for Vercel)
 const storage = multer.diskStorage({
-  destination: 'uploads/',
+  destination: function(req, file, cb) {
+    // Use /tmp directory for Vercel serverless functions
+    const uploadDir = process.env.VERCEL ? '/tmp' : 'uploads/';
+    cb(null, uploadDir);
+  },
   filename: function (req, file, cb) {
     // Generate unique filename with original extension
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -39,6 +43,14 @@ const upload = multer({
 
 // Store file content in memory mapped by user ID
 const fileContents = new Map();
+
+// Test route to check if file routes are working
+router.get('/test', (req, res) => {
+  res.json({ 
+    message: 'File routes are working!', 
+    timestamp: new Date().toISOString() 
+  });
+});
 
 // ------------------ Upload Route ------------------
 router.post('/upload', upload.single('file'), async (req, res) => {
